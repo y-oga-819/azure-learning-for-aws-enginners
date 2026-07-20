@@ -385,12 +385,12 @@ body > h1 {
   padding-bottom: 0;
 }
 nav#toc > h2 {
-  font-size: 20pt;
+  font-size: 19pt;
   color: var(--accent);
   border-left: none;
   border-bottom: 3px solid var(--accent);
   padding: 0 0 0.3em;
-  margin: 0 0 1.4em;
+  margin: 0 0 1.1em;
 }
 
 nav#toc ol {
@@ -402,11 +402,11 @@ nav#toc ol {
 /* --- 章の行 --- */
 /* 章タイトルが十分大きく区切りとして働くため、罫線は置かず余白だけでブロック化する */
 nav#toc > ol > li {
-  margin-top: 1.7em;                 /* 章と章のあいだを空けてブロック化 */
+  margin-top: 1.0em;                 /* 章と章のあいだを空けてブロック化 */
   break-inside: avoid;               /* 章タイトルだけが前ページに取り残されないよう塊で送る */
 }
 nav#toc > ol > li:first-child {
-  margin-top: 0.5em;
+  margin-top: 0.3em;
 }
 nav#toc > ol > li > a {
   display: block;
@@ -444,17 +444,17 @@ nav#toc > ol > li > a::after {
 
 /* --- 節の行(章の中の流れ)--- */
 nav#toc > ol > li > ol {
-  margin: 0.5em 0 0.2em;
+  margin: 0.3em 0 0.1em;
   padding-left: 3.4em;               /* 章番号ぶん字下げして章にぶら下げる */
 }
 nav#toc > ol > li > ol > li {
-  margin: 0.15em 0;
+  margin: 0.05em 0;
 }
 nav#toc > ol > li > ol > li > a {
   display: block;
   font-size: 8pt;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.4;
 }
 /* 定型ラベルの幅をそろえて、続く ── とサブ説明を各行で縦にそろえる */
 nav#toc .sec-label {
