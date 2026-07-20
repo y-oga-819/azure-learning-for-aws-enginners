@@ -445,7 +445,6 @@ nav#toc > ol > li > a::after {
 nav#toc > ol > li > ol {
   margin: 0.5em 0 0.2em;
   padding-left: 3.4em;               /* 章番号ぶん字下げして章にぶら下げる */
-  border-left: 2px solid var(--code-bg);
 }
 nav#toc > ol > li > ol > li {
   margin: 0.15em 0;
