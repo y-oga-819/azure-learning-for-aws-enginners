@@ -1,0 +1,15 @@
+# 依存関係
+node_modules/
+
+# 組版の生成物・作業ディレクトリ
+output/
+.vivliostyle/
+.vs-*/
+*.pdf
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

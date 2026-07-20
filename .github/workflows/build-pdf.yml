@@ -1,0 +1,95 @@
+name: build-pdf
+
+# Vivliostyle で PDF を組版する。push / PR で実行する。
+# - PDF を Artifact として保存(全実行)
+# - PR では PDF(zip)のダウンロード直リンクを PR にコメントする
+#   (レビュアーは PDF を直接開いてレイアウトを確認できる)
+# ビルド失敗(リンク切れ・設定エラー・組版エラー)で PR を落とす。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 日本語(CJK)フォントを入れないと組版で豆腐(□)になる
+      - name: Install Japanese fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+
+      # Vivliostyle は playwright-core の Chromium で組版する
+      - name: Install Chromium for Vivliostyle
+        run: npx playwright-core install --with-deps chromium
+
+      - name: Build PDF
+        run: npm run build
+
+      - name: Upload PDF artifact
+        id: upload_pdf
+        uses: actions/upload-artifact@v4
+        with:
+          name: azure-kyotsu-kiso-pdf
+          path: output/azure-kyotsu-kiso.pdf
+          if-no-files-found: error
+
+      # PR のときだけ:PDF(zip)のダウンロード直リンクをコメントする
+      - name: Comment PDF download link on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        env:
+          ARTIFACT_URL: ${{ steps.upload_pdf.outputs.artifact-url }}
+        with:
+          script: |
+            const artifactUrl = process.env.ARTIFACT_URL;
+            const marker = '<!-- vivliostyle-preview -->';
+            const body = [
+              marker,
+              '### 📄 組版プレビュー(この PR の PDF)',
+              '',
+              'この PR の原稿を Vivliostyle で組版しました。次のリンクから PDF(zip)を直接ダウンロードできます。',
+              '',
+              `**➡️ [PDF をダウンロード(azure-kyotsu-kiso-pdf.zip)](${artifactUrl})**`,
+              '',
+              '_zip を展開すると `azure-kyotsu-kiso.pdf` が入っています。ダウンロードには GitHub へのログインが必要です。_',
+              '_このコメントはビルドごとに自動更新されます。_',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }

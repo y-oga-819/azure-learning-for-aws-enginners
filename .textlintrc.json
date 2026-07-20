@@ -1,0 +1,42 @@
+{
+  "plugins": {},
+  "filters": {
+    "comments": true
+  },
+  "rules": {
+    "preset-ja-technical-writing": {
+      "sentence-length": {
+        "max": 120
+      },
+      "max-comma": {
+        "max": 4
+      },
+      "ja-no-mixed-period": {
+        "allowPeriodMarks": [":"],
+        "allowEmptyEnds": true
+      },
+      "no-exclamation-question-mark": false,
+      "no-doubled-joshi": {
+        "min_interval": 1,
+        "strict": false
+      },
+      "no-mix-dearu-desumasu": {
+        "preferInHeader": "",
+        "preferInBody": "ですます",
+        "preferInList": "ですます",
+        "strict": false
+      },
+      "max-kanji-continuous-len": false
+    },
+    "preset-ja-spacing": {
+      "ja-space-between-half-and-full-width": false,
+      "ja-space-around-code": {
+        "before": true,
+        "after": true
+      }
+    },
+    "prh": {
+      "rulePaths": ["prh.yml"]
+    }
+  }
+}
