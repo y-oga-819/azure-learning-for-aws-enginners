@@ -8,15 +8,18 @@
       にスクリーンショットして assets/cover.png を作る(scripts/build-cover.sh)。
       構図: 上3/5=白地にタイトル主役 / 下2/5=ブループリント地に「左:リソース一覧 / 右:構成図」。
       SVG 座標系は viewBox="0 0 148 210"(A5 を mm で扱う)。
+      preserveAspectRatio="none" でページ全面に隙間なく充填し、body 背景も紺にして
+      下端に白帯が出ないようにしている。
     -->
     <style>
-      html, body { margin: 0; padding: 0; background: #ffffff; }
+      html, body { margin: 0; padding: 0; background: #07264a; }
       svg { display: block; width: 1748px; height: 2480px; }
     </style>
   </head>
   <body>
     <svg
       viewBox="0 0 148 210"
+      preserveAspectRatio="none"
       xmlns="http://www.w3.org/2000/svg"
       font-family="'Hiragino Kaku Gothic ProN','Noto Sans CJK JP','Yu Gothic','Meiryo',sans-serif"
     >
@@ -37,19 +40,23 @@
       </defs>
 
       <!-- ===== 上3/5: 白地・タイトル ===== -->
-      <rect x="0" y="0" width="148" height="210" fill="#ffffff" />
+      <rect x="0" y="0" width="148" height="126" fill="#ffffff" />
       <rect x="0" y="0" width="148" height="2.4" fill="#0a5ca8" />
 
       <!-- キッカー(AWS 経験者 は AWS オレンジの差し色) -->
-      <text x="16" y="40" font-size="4.8" letter-spacing="0.4"><tspan fill="#ec7211" font-weight="bold">AWS 経験者</tspan><tspan fill="#40638a">のための</tspan></text>
+      <text x="16" y="37" font-size="4.8" letter-spacing="0.4"><tspan fill="#ec7211" font-weight="bold">AWS 経験者</tspan><tspan fill="#40638a">のための</tspan></text>
 
       <!-- タイトル(主役・背景色の青で特大) -->
-      <text x="15" y="67" fill="#0a5ca8" font-size="23" font-weight="bold" letter-spacing="0.2">Azure</text>
-      <text x="15" y="93" fill="#0a5ca8" font-size="23" font-weight="bold" letter-spacing="1.5">実践入門</text>
+      <text x="15" y="64" fill="#0a5ca8" font-size="23" font-weight="bold" letter-spacing="0.2">Azure</text>
+      <text x="15" y="90" fill="#0a5ca8" font-size="23" font-weight="bold" letter-spacing="1.5">実践入門</text>
 
       <!-- 巻バッジ -->
-      <rect x="16" y="101" width="33" height="9.2" rx="1.4" fill="#0a5ca8" />
-      <text x="32.5" y="107.5" fill="#ffffff" font-size="4.4" font-weight="bold" text-anchor="middle">共通基礎編</text>
+      <rect x="16" y="98" width="33" height="9.2" rx="1.4" fill="#0a5ca8" />
+      <text x="32.5" y="104.5" fill="#ffffff" font-size="4.4" font-weight="bold" text-anchor="middle">共通基礎編</text>
+
+      <!-- 説明文 + 著者(白地の下部) -->
+      <text x="16" y="118" fill="#33526f" font-size="3.2">AWS と比較しながら学ぶ、Azure アーキテクチャ</text>
+      <text x="132" y="118" fill="#5b7fa6" font-size="2.8" text-anchor="end">著　y-oga-819</text>
 
       <!-- ===== 下2/5: ブループリント地 ===== -->
       <g>
@@ -68,12 +75,11 @@
           <rect x="16" y="174.9" width="1.7" height="1.7" fill="#4db8ff" /><text x="19.5" y="176.7">Log Analytics / 予算</text>
           <rect x="16" y="184.4" width="1.7" height="1.7" fill="#4db8ff" /><text x="19.5" y="186.2">Bicep(IaC)</text>
         </g>
-        <text x="16" y="205.5" fill="#9cc7f5" font-size="2.2">y-oga-819</text>
 
         <!-- 区切り -->
         <line x1="53" y1="132" x2="53" y2="204" stroke="#5f9ad6" stroke-width="0.2" stroke-opacity="0.35" />
 
-        <!-- 右: 構成図(Entra=テナント / MG 内に dev・prod サブスクリプションと共通の監視用RG) -->
+        <!-- 右: 構成図(Entra=テナント / MG 内に dev・prod・監視 の3サブスクリプション) -->
         <!-- Entra ID(テナント全体) -->
         <rect x="55" y="134" width="77" height="6.2" rx="1.2" fill="#4aa3ff" fill-opacity="0.08" stroke="#9cccf5" stroke-width="0.4" />
         <g stroke="#8fd0ff" stroke-width="0.45" fill="none">
@@ -111,17 +117,16 @@
         <rect x="79.7" y="188.5" width="16" height="7.5" rx="0.6" fill="none" stroke="#cfe4ff" stroke-width="0.3" stroke-dasharray="1.1 0.9" />
         <text x="80.8" y="191.9" fill="#cfe4ff" font-size="1.4">snet-data</text>
 
-        <!-- 共通の監視用RG(Log Analytics)。dev・prod から診断設定で集約(MG 内の共有RG)-->
-        <path d="M100 165C102 167 103 169 103.6 172" fill="none" stroke="#8fd0ff" stroke-width="0.35" stroke-dasharray="1.2 0.9" marker-end="url(#arrow)" />
-        <path d="M100 189C102 187 103 185 103.6 182" fill="none" stroke="#8fd0ff" stroke-width="0.35" stroke-dasharray="1.2 0.9" marker-end="url(#arrow)" />
-        <rect x="104" y="162" width="25" height="30" rx="1.3" fill="#4aa3ff" fill-opacity="0.06" stroke="#bcdcff" stroke-width="0.4" />
-        <text x="105.6" y="166" fill="#cfe4ff" font-size="1.55">監視用RG ・ 共通</text>
-        <rect x="106" y="168.5" width="21" height="15.5" rx="1" fill="#8fd0ff" fill-opacity="0.10" stroke="#ffffff" stroke-width="0.4" />
+        <!-- 監視サブスクリプション(共通)。dev・prod から診断ログを集約 -->
+        <path d="M100 165C102 167 103 169 103.4 172" fill="none" stroke="#8fd0ff" stroke-width="0.35" stroke-dasharray="1.2 0.9" marker-end="url(#arrow)" />
+        <path d="M100 189C102 187 103 185 103.4 182" fill="none" stroke="#8fd0ff" stroke-width="0.35" stroke-dasharray="1.2 0.9" marker-end="url(#arrow)" />
+        <rect x="104" y="162" width="26" height="30" rx="1.3" fill="#4aa3ff" fill-opacity="0.06" stroke="#bcdcff" stroke-width="0.4" />
+        <text x="105.6" y="166" fill="#cfe4ff" font-size="1.5">Subscription ・ 監視(共通)</text>
+        <rect x="106" y="168.5" width="22" height="15.5" rx="1" fill="#8fd0ff" fill-opacity="0.10" stroke="#ffffff" stroke-width="0.4" />
         <g stroke="#8fd0ff" stroke-width="0.6" fill="none">
-          <path d="M111 176.5V174M113.3 176.5V172.5M115.6 176.5V175M117.9 176.5V173.5" />
+          <path d="M111.5 176.5V174M113.8 176.5V172.5M116.1 176.5V175M118.4 176.5V173.5" />
         </g>
-        <text x="116.5" y="181.4" fill="#ffffff" font-size="1.55" text-anchor="middle">Log Analytics</text>
-        <text x="116.5" y="188.6" fill="#9cc7f5" font-size="1.5" text-anchor="middle">診断設定で集約</text>
+        <text x="117" y="181.4" fill="#ffffff" font-size="1.55" text-anchor="middle">Log Analytics</text>
       </g>
     </svg>
   </body>
