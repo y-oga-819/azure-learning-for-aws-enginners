@@ -399,10 +399,9 @@ nav#toc ol {
 }
 
 /* --- 章の行 --- */
+/* 章タイトルが十分大きく区切りとして働くため、罫線は置かず余白だけでブロック化する */
 nav#toc > ol > li {
-  margin-top: 1.5em;                 /* 章と章のあいだを空けてブロック化 */
-  padding-top: 0.5em;
-  border-top: 1px solid var(--border);
+  margin-top: 1.7em;                 /* 章と章のあいだを空けてブロック化 */
 }
 nav#toc > ol > li:first-child {
   margin-top: 0.5em;
