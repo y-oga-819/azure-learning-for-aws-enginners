@@ -60,9 +60,9 @@ npm install
 | ワークフロー | 内容 | PR を落とすか |
 |---|---|---|
 | **lint**(`lint.yml`) | textlint、リンク切れチェック、要検証マーカーの集計レポート | textlint / リンク切れは失敗で落とす。要検証はレポートのみ |
-| **build-pdf**(`build-pdf.yml`) | Vivliostyle で PDF をビルドし Artifact 保存。PR ではプレビュー画像を PR にコメント | ビルド失敗(リンク切れ・設定エラー)で落とす |
+| **build-pdf**(`build-pdf.yml`) | Vivliostyle で PDF をビルドし Artifact 保存。PR では PDF(zip)のダウンロード直リンクを PR にコメント | ビルド失敗(リンク切れ・設定エラー)で落とす |
 
-生成された PDF は各実行の **Artifacts** からダウンロードできます。PR では、組版後の主要ページのプレビュー画像が自動でコメントされるので、レイアウトを PR 単位で確認できます。
+生成された PDF は各実行の **Artifacts** からダウンロードできます。PR では、その PR の PDF(zip)への**ダウンロード直リンク**が自動でコメントされるので、PDF を直接開いてレイアウトを PR 単位で確認できます。
 
 ## 執筆ルール
 
