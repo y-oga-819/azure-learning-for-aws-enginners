@@ -112,6 +112,7 @@ section.chapter > h1 {
   border-bottom: none;             /* 扉では帯にしない */
   padding-bottom: 0;
   margin: 26mm 0 0;                /* ページ上部から少し下げて主題を置く */
+  break-before: right;             /* 扉は奇数(右)ページから(印刷本の一般的な構成)*/
   text-align: left;
   break-after: avoid;
 }
@@ -136,8 +137,8 @@ section.chapter > h1 .chap-subtitle {
   color: var(--muted);
 }
 
-/* 扉を必ず左(偶数)ページから始めたい場合は、次の行を有効にする:
-   section.chapter > h1 { break-before: left; } */
+/* 扉の開始ページは上の break-before で制御している(既定は right = 奇数/右)。
+   左(偶数)ページから始めたい場合は left、空白ページを作りたくない場合は page にする。 */
 
 /* --- 章扉のミニ目次「この章の流れ」--- */
 nav.chapter-outline {
