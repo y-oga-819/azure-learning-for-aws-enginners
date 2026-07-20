@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>表紙(ラスタライズ元)</title>
+    <!--
+      この HTML は「表紙画像(assets/cover.png)の生成元」です。
+      Chromium でこのページを 1748×2480px(A5・300dpi)でスクリーンショットして
+      assets/cover.png を作り、vivliostyle.config.js の cover に渡しています。
+      デザインを直したら scripts/build-cover.sh(相当のコマンド)で再ラスタライズします。
+      SVG 座標系は viewBox="0 0 148 210"(A5 を mm で扱う)。
+    -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #061f3c;
+      }
+      svg {
+        display: block;
+        width: 1748px;
+        height: 2480px;
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      viewBox="0 0 148 210"
+      xmlns="http://www.w3.org/2000/svg"
+      font-family="'Hiragino Kaku Gothic ProN','Noto Sans CJK JP','Yu Gothic','Meiryo',sans-serif"
+    >
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0d4a86" />
+          <stop offset="0.55" stop-color="#0a3766" />
+          <stop offset="1" stop-color="#061f3c" />
+        </linearGradient>
+        <pattern id="grid-minor" width="4" height="4" patternUnits="userSpaceOnUse">
+          <path d="M4 0H0V4" fill="none" stroke="#8fc3ff" stroke-width="0.12" stroke-opacity="0.10" />
+        </pattern>
+        <pattern id="grid-major" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M20 0H0V20" fill="none" stroke="#8fc3ff" stroke-width="0.2" stroke-opacity="0.20" />
+        </pattern>
+      </defs>
+
+      <!-- 背景と方眼 -->
+      <rect x="0" y="0" width="148" height="210" fill="url(#bg)" />
+      <rect x="0" y="0" width="148" height="210" fill="url(#grid-minor)" />
+      <rect x="0" y="0" width="148" height="210" fill="url(#grid-major)" />
+
+      <!-- 図面枠 + 四隅のレジストレーションマーク -->
+      <rect x="9" y="9" width="130" height="192" fill="none" stroke="#bfe0ff" stroke-width="0.3" stroke-opacity="0.55" />
+      <g stroke="#bfe0ff" stroke-width="0.5" stroke-opacity="0.9" fill="none">
+        <path d="M9 15V9H15" />
+        <path d="M133 9H139V15" />
+        <path d="M9 195V201H15" />
+        <path d="M133 201H139V195" />
+      </g>
+
+      <!-- ヘッダー(図面情報っぽく) -->
+      <g fill="#9cc7f5" font-size="2.6" letter-spacing="0.5">
+        <text x="14" y="20">MICROSOFT AZURE ・ LANDING ZONE</text>
+        <text x="134" y="20" text-anchor="end">DWG. AZ-001</text>
+      </g>
+      <line x1="14" y1="23" x2="134" y2="23" stroke="#9cc7f5" stroke-width="0.2" stroke-opacity="0.6" />
+
+      <!-- タイトル群 -->
+      <text x="14" y="36" fill="#8fd0ff" font-size="4.2" letter-spacing="0.6">AWS 経験者のための</text>
+      <text x="13.4" y="52" fill="#ffffff" font-size="15" font-weight="bold" letter-spacing="0.3">Azure 実践入門</text>
+      <rect x="14" y="57" width="30" height="8.4" rx="1.2" fill="#3aa0ff" />
+      <text x="29" y="62.9" fill="#06254a" font-size="4.2" font-weight="bold" text-anchor="middle">共通基礎編</text>
+      <text x="47" y="62.9" fill="#cfe4ff" font-size="3.4">Vol.1 ／ 全4冊</text>
+      <text x="14" y="74.5" fill="#d7e8ff" font-size="3.5">ID・統制・ネットワーク・監視</text>
+      <text x="14" y="80.5" fill="#89b6e6" font-size="3.2">すべての環境の土台をつくる</text>
+
+      <!-- ヒーロー図: ミニランディングゾーンの入れ子構成 -->
+      <g>
+        <!-- 外: 管理グループ(破線) -->
+        <rect x="26" y="92" width="96" height="70" rx="2" fill="#4aa3ff" fill-opacity="0.04"
+              stroke="#7fb8f0" stroke-width="0.4" stroke-dasharray="2 1.4" />
+        <rect x="26" y="92" width="2.4" height="2.4" fill="#7fb8f0" />
+        <text x="30" y="90.4" fill="#9cc7f5" font-size="2.7">Management Group</text>
+
+        <!-- サブスクリプション -->
+        <rect x="33" y="100" width="82" height="55" rx="1.6" fill="#4aa3ff" fill-opacity="0.05"
+              stroke="#9cccf5" stroke-width="0.4" stroke-dasharray="1.6 1.2" />
+        <rect x="33" y="100" width="2.2" height="2.2" fill="#9cccf5" />
+        <text x="36.6" y="98.6" fill="#bcdcff" font-size="2.5">Subscription — dev / prod</text>
+
+        <!-- リソースグループ -->
+        <rect x="40" y="108" width="68" height="40" rx="1.4" fill="#4aa3ff" fill-opacity="0.06"
+              stroke="#bcdcff" stroke-width="0.4" />
+        <text x="43.4" y="106.6" fill="#d7e8ff" font-size="2.4">Resource Group</text>
+
+        <!-- VNet + サブネット -->
+        <rect x="46" y="116" width="56" height="27" rx="1.2" fill="#8fd0ff" fill-opacity="0.10"
+              stroke="#ffffff" stroke-width="0.45" />
+        <text x="49" y="114.6" fill="#ffffff" font-size="2.4">VNet 10.0.0.0/16</text>
+        <rect x="50" y="121" width="22" height="17" rx="1" fill="none" stroke="#cfe4ff" stroke-width="0.35" stroke-dasharray="1.2 1" />
+        <text x="52" y="125" fill="#cfe4ff" font-size="2">snet-app</text>
+        <rect x="76" y="121" width="22" height="17" rx="1" fill="none" stroke="#cfe4ff" stroke-width="0.35" stroke-dasharray="1.2 1" />
+        <text x="78" y="125" fill="#cfe4ff" font-size="2">snet-data</text>
+        <g font-size="1.8" fill="#06254a">
+          <rect x="64.5" y="133.5" width="7" height="3.2" rx="0.6" fill="#8fd0ff" />
+          <text x="68" y="135.9" text-anchor="middle">NSG</text>
+          <rect x="90.5" y="133.5" width="7" height="3.2" rx="0.6" fill="#8fd0ff" />
+          <text x="94" y="135.9" text-anchor="middle">NSG</text>
+        </g>
+
+        <!-- 寸法線(左辺・設計図の目盛り) -->
+        <g stroke="#7fb8f0" stroke-width="0.25" stroke-opacity="0.8">
+          <line x1="21" y1="92" x2="21" y2="162" />
+          <line x1="19.6" y1="92" x2="22.4" y2="92" />
+          <line x1="19.6" y1="162" x2="22.4" y2="162" />
+        </g>
+        <text x="19.6" y="127" fill="#7fb8f0" font-size="2.2" transform="rotate(-90 19.6 127)" text-anchor="middle">FOUNDATION</text>
+      </g>
+
+      <!-- 凡例: 5本柱(等間隔・24mm スロット) -->
+      <text x="14" y="176" fill="#9cc7f5" font-size="2.5" letter-spacing="0.4">5 PILLARS ─ この本で作る土台</text>
+      <line x1="14" y1="178.5" x2="134" y2="178.5" stroke="#9cc7f5" stroke-width="0.2" stroke-opacity="0.5" />
+      <g fill="#dce9fb" font-size="2.4" stroke="none">
+        <!-- ID(鍵) x=14 -->
+        <g stroke="#8fd0ff" stroke-width="0.4" fill="none">
+          <circle cx="16" cy="184.4" r="1.6" />
+          <path d="M17.5 184.4H21M20 184.4V185.9" />
+        </g>
+        <text x="23" y="185.3">ID</text>
+        <!-- Governance(盾) x=38 -->
+        <path d="M40 182.2l2.6 .9v1.6c0 1.4-1.1 2.3-2.6 2.9-1.5-.6-2.6-1.5-2.6-2.9v-1.6z"
+              fill="none" stroke="#8fd0ff" stroke-width="0.4" />
+        <text x="44.5" y="185.3">統制</text>
+        <!-- Network(ノード) x=62 -->
+        <g stroke="#8fd0ff" stroke-width="0.4" fill="#8fd0ff">
+          <circle cx="64" cy="183" r="0.85" />
+          <circle cx="62.2" cy="186" r="0.85" />
+          <circle cx="65.8" cy="186" r="0.85" />
+          <path d="M64 183L62.2 186M64 183L65.8 186" fill="none" />
+        </g>
+        <text x="68.5" y="185.3">ネットワーク</text>
+        <!-- Monitor(波形) x=98 -->
+        <path d="M98 186.4l1.8-3 1.5 1.9 1.3-3.2 1.7 4.1" fill="none" stroke="#8fd0ff" stroke-width="0.4" />
+        <text x="106" y="185.3">監視</text>
+        <!-- IaC(ブラケット) x=120 -->
+        <path d="M120.2 182.6l-1.7 2.4 1.7 2.4M123.8 182.6l1.7 2.4-1.7 2.4" fill="none" stroke="#8fd0ff" stroke-width="0.4" />
+        <text x="127" y="185.3">IaC</text>
+      </g>
+
+      <!-- 下部メタ(著者・シート) -->
+      <line x1="14" y1="191" x2="134" y2="191" stroke="#bfe0ff" stroke-width="0.2" stroke-opacity="0.5" />
+      <g font-size="2">
+        <text x="14" y="196.4" fill="#9cc7f5" letter-spacing="0.3">AUTHOR</text>
+        <text x="26" y="196.4" fill="#eaf3ff" font-size="2.4">y-oga-819</text>
+        <text x="134" y="196.4" text-anchor="end" fill="#eaf3ff" font-size="2.4">SHEET 1 / 4</text>
+      </g>
+    </svg>
+  </body>
+</html>

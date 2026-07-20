@@ -20,6 +20,13 @@ export default {
   },
 
   // 章番号は原稿側の見出し(# 第N章 …)で表現し、CSS の counter でも装飾する。
+  // 表紙: manuscripts/cover.html を焼いた画像(scripts/build-cover.sh で再生成)。
+  // これで本文の先頭(目次より前)に全面の表紙ページが入る。
+  cover: {
+    src: 'assets/cover.png',
+    name: '表紙',
+  },
+
   entry: [
     'manuscripts/ch00-preface.md',
     'manuscripts/ch01.md',

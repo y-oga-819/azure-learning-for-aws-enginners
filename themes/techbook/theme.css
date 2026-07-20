@@ -376,13 +376,10 @@ figcaption {
  * .sec-sub)は本文と共通で、rehype-book-design.mjs が付与している。
  * ============================================================ */
 
-/* 目次ページの見出し(index.html の h1「書名」/ h2「目次」)*/
-nav#toc {
-  break-before: page;
-}
+/* 目次ページの見出し(index.html の h2「目次」)。
+   書名 h1 は表紙(cover.png)が担うので隠し、目次を先頭に繰り上げる。 */
 body > h1 {
-  border-bottom: none;
-  padding-bottom: 0;
+  display: none;
 }
 nav#toc > h2 {
   font-size: 19pt;
