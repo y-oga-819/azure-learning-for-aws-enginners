@@ -412,10 +412,14 @@ nav#toc > ol > li > a {
   display: block;
   color: var(--fg);
   line-height: 1.4;
+  padding-left: 3.4em;               /* タイトル開始位置を全エントリでそろえる */
 }
+/* 章番号は左の余白側(padding 内)にぶら下げ、まえがき・奥付のように番号が
+   ない項目でもタイトルの先頭位置がそろうようにする */
 nav#toc .chap-num {
   display: inline-block;
-  min-width: 3.4em;
+  width: 3.4em;
+  margin-left: -3.4em;
   font-size: 9pt;
   font-weight: bold;
   color: var(--accent);
