@@ -368,6 +368,17 @@ figcaption {
   margin-top: 0.4em;
 }
 
+/* 図表キャプション: 表・コード図・構成図の直下に置く番号付きの説明
+   (「図N-M」= N 章のうち M 番目の図表。図・表を通し番号で数える) */
+p.caption {
+  font-size: 8pt;
+  color: var(--muted);
+  text-align: center;
+  text-indent: 0;
+  margin: -0.3em 0 1.4em;
+  break-before: avoid;         /* 直前の図表と分離しない */
+}
+
 /* ============================================================
  * 目次 — 章タイトルと節でメリハリをつける
  *   ・章(data-section-level="1")…… 大きく・太く。本全体の流れが見える。
