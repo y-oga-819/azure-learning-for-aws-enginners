@@ -403,6 +403,7 @@ nav#toc ol {
 /* 章タイトルが十分大きく区切りとして働くため、罫線は置かず余白だけでブロック化する */
 nav#toc > ol > li {
   margin-top: 1.7em;                 /* 章と章のあいだを空けてブロック化 */
+  break-inside: avoid;               /* 章タイトルだけが前ページに取り残されないよう塊で送る */
 }
 nav#toc > ol > li:first-child {
   margin-top: 0.5em;
@@ -451,13 +452,17 @@ nav#toc > ol > li > ol > li {
 }
 nav#toc > ol > li > ol > li > a {
   display: block;
-  font-size: 8.5pt;
+  font-size: 8pt;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.55;
 }
+/* 定型ラベルの幅をそろえて、続く ── とサブ説明を各行で縦にそろえる */
 nav#toc .sec-label {
+  display: inline-block;
+  min-width: 10.5em;
   font-weight: bold;
   color: #444;
+  vertical-align: top;
 }
 nav#toc .sec-sub {
   color: var(--muted);
