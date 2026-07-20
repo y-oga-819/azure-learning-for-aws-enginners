@@ -1,0 +1,44 @@
+# prh(ProofReading Helper)表記ルール
+# shared/glossary.md の「表記ルール表」と対になる、機械チェック用の単一情報源。
+# ここを更新したら glossary.md にも反映する(逆も同様)。
+# textlint-rule-prh がこのファイルを読み、誤表記を正表記へ矯正する。
+#
+# patterns は既定でリテラル文字列として扱われる(正規表現を使いたい場合は /.../ で囲む)。
+
+version: 1
+
+rules:
+  # --- Azure 用語の統一 ---
+  - expected: Entra ID
+    patterns:
+      - Azure AD
+      - AzureAD
+      - Azure Active Directory
+    prh: 「Entra ID」に統一(旧称 Azure AD / Azure Active Directory は使わない)
+
+  - expected: リソースグループ
+    patterns:
+      - リソース・グループ
+      - リソース グループ
+
+  - expected: NSG
+    patterns:
+      - ネットワークセキュリティグループ(NSG)
+
+  - expected: Log Analytics ワークスペース
+    patterns:
+      - ログアナリティクス
+      - ログ アナリティクス
+
+  - expected: Bicep
+    patterns:
+      - BICEP
+
+  # --- 一般的な表記統一 ---
+  - expected: ハンズオン
+    patterns:
+      - ハンズ・オン
+
+  - expected: ランディングゾーン
+    patterns:
+      - ランディング・ゾーン

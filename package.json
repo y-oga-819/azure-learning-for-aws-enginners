@@ -1,0 +1,23 @@
+{
+  "name": "azure-jissen-nyumon-kyotsu-kiso",
+  "version": "0.1.0",
+  "private": true,
+  "description": "『AWS経験者のためのAzure実践入門【共通基礎編】』の原稿・組版リポジトリ",
+  "type": "module",
+  "scripts": {
+    "build": "vivliostyle build",
+    "preview": "vivliostyle preview",
+    "lint": "textlint \"manuscripts/**/*.md\" \"shared/**/*.md\"",
+    "lint:fix": "textlint --fix \"manuscripts/**/*.md\" \"shared/**/*.md\"",
+    "check:todo": "node scripts/check-todo.mjs",
+    "check:links": "node scripts/check-links.mjs"
+  },
+  "devDependencies": {
+    "@vivliostyle/cli": "^9.0.0",
+    "textlint": "^14.0.0",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-rule-preset-ja-spacing": "^2.4.3",
+    "textlint-rule-preset-ja-technical-writing": "^12.0.2",
+    "textlint-rule-prh": "^6.0.0"
+  }
+}

@@ -1,0 +1,258 @@
+/*
+ * techbook theme — 技術書向けの最小 CSS 組版テーマ
+ * 対象: A5 / 日本語縦書きではなく横書き
+ * 方針: 凝りすぎず、コード・表・コラムが読みやすいことを最優先。
+ * カスタマイズはこのファイルを直接編集する。
+ */
+
+/* ============================================================
+ * ページ設定(A5・ノンブル・柱)
+ * ============================================================ */
+@page {
+  size: A5;
+  margin: 18mm 16mm 20mm 16mm;
+
+  @bottom-center {
+    content: counter(page);
+    font-size: 8pt;
+    color: #666;
+  }
+}
+
+/* 章の最初のページは柱(ヘッダ)を出さない、など細かい調整はここで */
+@page :first {
+  @bottom-center { content: normal; }
+}
+
+/* ============================================================
+ * 本文基本
+ * ============================================================ */
+:root {
+  --fg: #1a1a1a;
+  --muted: #555;
+  --accent: #0a5ca8;      /* Azure らしい青 */
+  --code-bg: #f5f6f8;
+  --border: #d0d4da;
+  --note-bg: #fff8e6;     /* 注意 */
+  --note-border: #e0b400;
+  --column-bg: #eef4fb;   /* コラム */
+  --column-border: #0a5ca8;
+}
+
+html {
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans CJK JP", "Yu Gothic",
+    "Meiryo", sans-serif;
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: var(--fg);
+}
+
+body {
+  text-align: justify;
+  hanging-punctuation: allow-end;
+  word-break: normal;
+  line-break: strict;
+}
+
+p {
+  margin: 0 0 0.6em;
+  text-indent: 1em;
+}
+
+/* リスト直後や見出し直後などインデント不要な段落 */
+li p,
+blockquote p,
+.note p,
+.column p {
+  text-indent: 0;
+}
+
+/* ============================================================
+ * 見出し(章番号は原稿の「# 第N章」で表現する)
+ * ============================================================ */
+h1 {
+  font-size: 18pt;
+  line-height: 1.4;
+  color: var(--accent);
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 0.3em;
+  margin: 0 0 1.2em;
+  break-before: page;      /* 章はページ頭から */
+  string-set: chapter-title content();
+}
+
+h2 {
+  font-size: 14pt;
+  margin: 1.6em 0 0.6em;
+  padding-left: 0.5em;
+  border-left: 6px solid var(--accent);
+  break-after: avoid;
+}
+
+h3 {
+  font-size: 11.5pt;
+  margin: 1.2em 0 0.4em;
+  color: #333;
+  break-after: avoid;
+}
+
+h4 {
+  font-size: 10pt;
+  margin: 1em 0 0.3em;
+  color: var(--muted);
+  break-after: avoid;
+}
+
+/* 柱: 偶数ページに章タイトルを出す例 */
+@page :left {
+  @top-left {
+    content: string(chapter-title);
+    font-size: 8pt;
+    color: #888;
+  }
+}
+
+/* ============================================================
+ * コード
+ * ============================================================ */
+code {
+  font-family: "SFMono-Regular", "Consolas", "Menlo", "Noto Sans Mono CJK JP",
+    monospace;
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.8em 1em;
+  margin: 0.8em 0;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;   /* 紙は横スクロールできないので折り返す */
+  break-inside: avoid;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ============================================================
+ * 表
+ * ============================================================ */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-size: 8.5pt;
+  break-inside: avoid;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.4em 0.6em;
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  background: var(--accent);
+  color: #fff;
+  font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+  background: #f7f9fb;
+}
+
+/* ============================================================
+ * 引用・コラム・注意書き
+ * blockquote を用途別に使い分ける記法は shared/style-guide.md を参照。
+ * ============================================================ */
+blockquote {
+  margin: 1em 0;
+  padding: 0.6em 1em;
+  border-left: 4px solid var(--border);
+  color: var(--muted);
+  background: #fafafa;
+}
+
+/* コラム: <div class="column"> … </div> で囲む */
+.column {
+  margin: 1.2em 0;
+  padding: 0.8em 1em;
+  background: var(--column-bg);
+  border: 1px solid var(--column-border);
+  border-radius: 5px;
+  break-inside: avoid;
+}
+.column > .column-title,
+.column > p:first-child strong:first-child {
+  color: var(--accent);
+  font-weight: bold;
+}
+.column-title {
+  display: block;
+  font-weight: bold;
+  color: var(--accent);
+  margin-bottom: 0.3em;
+}
+
+/* 注意/警告: <div class="note"> … </div> で囲む */
+.note {
+  margin: 1.2em 0;
+  padding: 0.8em 1em;
+  background: var(--note-bg);
+  border: 1px solid var(--note-border);
+  border-radius: 5px;
+  break-inside: avoid;
+}
+.note-title {
+  display: block;
+  font-weight: bold;
+  color: #a07800;
+  margin-bottom: 0.3em;
+}
+
+/* ============================================================
+ * 図
+ * ============================================================ */
+figure {
+  margin: 1.2em 0;
+  text-align: center;
+  break-inside: avoid;
+}
+figure img {
+  max-width: 100%;
+}
+figcaption {
+  font-size: 8pt;
+  color: var(--muted);
+  margin-top: 0.4em;
+}
+
+/* ============================================================
+ * 目次
+ * ============================================================ */
+nav[role="doc-toc"] ol,
+nav#toc ol {
+  list-style: none;
+  padding-left: 0;
+}
+nav[role="doc-toc"] a::after,
+nav#toc a::after {
+  content: leader('.') target-counter(attr(href), page);
+}
+
+/* リンクは紙面では黒(URL はコード表記で本文に出す方針) */
+a {
+  color: inherit;
+  text-decoration: none;
+}
