@@ -2,6 +2,9 @@
 // manuscripts/ 配下の章を「本書の並び順」で束ねて 1 冊の PDF を生成する。
 // 章を追加・並び替えするときは entry 配列を編集する(ファイル名順ではなくこの配列順が正)。
 
+import { VFM } from '@vivliostyle/vfm';
+import rehypeBookDesign from './scripts/rehype-book-design.mjs';
+
 export default {
   title: 'AWS経験者のためのAzure実践入門【共通基礎編】',
   author: 'y-oga-819',
@@ -42,4 +45,9 @@ export default {
   ],
 
   workspaceDir: '.vivliostyle',
+
+  // 原稿の Markdown → HTML 変換に、組版デザイン用の HAST 変換を追加する。
+  // (見出しの2行化・章見出しの分解・章扉のミニ目次生成。詳細は scripts/rehype-book-design.mjs)
+  documentProcessor: (options, metadata) =>
+    VFM(options, metadata).use(rehypeBookDesign),
 };

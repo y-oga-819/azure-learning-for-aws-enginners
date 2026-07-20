@@ -69,24 +69,153 @@ blockquote p,
 
 /* ============================================================
  * 見出し(章番号は原稿の「# 第N章」で表現する)
+ *
+ * 見出しの内部構造(span)は scripts/rehype-book-design.mjs がビルド時に付与する:
+ *   h1 → .chap-num(第N章)/ .chap-title(主題)/ .chap-subtitle(— の後ろ)
+ *   h2 → .sec-label(定型ラベル)/ .sec-sep(区切り)/ .sec-sub(章固有のサブ説明)
  * ============================================================ */
+
+/* --- h1: 章見出し(付録・まえがき等の非・章にも共通の基本形)--- */
 h1 {
-  font-size: 18pt;
-  line-height: 1.4;
-  color: var(--accent);
-  border-bottom: 3px solid var(--accent);
-  padding-bottom: 0.3em;
+  break-before: page;      /* 章・付録はページ頭から */
   margin: 0 0 1.2em;
-  break-before: page;      /* 章はページ頭から */
+  line-height: 1.35;
+}
+h1 .chap-num {
+  display: inline-block;
+  font-size: 10pt;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-right: 0.6em;
+  string-set: chapter-num content();
+}
+h1 .chap-title {
+  font-size: 18pt;
+  font-weight: bold;
+  color: var(--accent);
   string-set: chapter-title content();
 }
+h1 .chap-subtitle {
+  font-size: 12pt;
+  font-weight: normal;
+  color: var(--muted);
+}
+/* 付録・まえがき等(扉なし)の h1 は従来どおり下線付きの帯見出し */
+h1 {
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 0.3em;
+}
 
-h2 {
-  font-size: 14pt;
-  margin: 1.6em 0 0.6em;
-  padding-left: 0.5em;
-  border-left: 6px solid var(--accent);
+/* --- 章扉(オープナー): section.chapter だけを大きく組む --- */
+section.chapter > h1 {
+  border-bottom: none;             /* 扉では帯にしない */
+  padding-bottom: 0;
+  margin: 26mm 0 0;                /* ページ上部から少し下げて主題を置く */
+  text-align: left;
   break-after: avoid;
+}
+section.chapter > h1 .chap-num {
+  display: block;
+  font-size: 11pt;
+  margin: 0 0 0.6em;
+  letter-spacing: 0.18em;
+}
+section.chapter > h1 .chap-title {
+  display: block;
+  font-size: 26pt;
+  line-height: 1.3;
+  color: var(--fg);
+}
+section.chapter > h1 .chap-subtitle {
+  display: block;
+  font-size: 13pt;
+  margin-top: 0.8em;
+  padding-top: 0.7em;
+  border-top: 2px solid var(--accent);
+  color: var(--muted);
+}
+
+/* 扉を必ず左(偶数)ページから始めたい場合は、次の行を有効にする:
+   section.chapter > h1 { break-before: left; } */
+
+/* --- 章扉のミニ目次「この章の流れ」--- */
+nav.chapter-outline {
+  margin-top: 16mm;
+  break-after: page;               /* 扉のあと、本文は次ページから */
+  break-inside: avoid;
+}
+nav.chapter-outline .chapter-outline-caption {
+  font-size: 9pt;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-indent: 0;
+  margin: 0 0 0.9em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--border);
+}
+nav.chapter-outline ol {
+  list-style: none;
+  counter-reset: outline;
+  margin: 0;
+  padding: 0;
+}
+nav.chapter-outline li {
+  counter-increment: outline;
+  position: relative;
+  padding-left: 3.2em;
+  margin: 0 0 0.9em;
+  break-inside: avoid;
+}
+nav.chapter-outline li::before {
+  content: counter(outline, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-size: 12pt;
+  font-weight: bold;
+  color: var(--accent);
+  font-family: "SFMono-Regular", "Consolas", monospace;
+}
+nav.chapter-outline .o-label {
+  display: block;
+  font-size: 11pt;
+  font-weight: bold;
+  color: var(--fg);
+  line-height: 1.4;
+}
+nav.chapter-outline .o-sub {
+  display: block;
+  font-size: 9pt;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* --- h2: 節見出しを「定型ラベル(1行目)+ サブ説明(2行目)」の2行組みに --- */
+section.level2 > h2 {
+  margin: 1.8em 0 0.7em;
+  padding: 0.15em 0 0.15em 0.7em;
+  border-left: 5px solid var(--accent);
+  break-after: avoid;
+}
+h2 .sec-label {
+  display: block;
+  font-size: 13.5pt;
+  font-weight: bold;
+  color: var(--accent);
+  line-height: 1.35;
+}
+h2 .sec-sep {
+  display: none;                   /* 紙面では区切り文字は出さない(2行で表現)*/
+}
+h2 .sec-sub {
+  display: block;
+  font-size: 10pt;
+  font-weight: normal;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 0.15em;
 }
 
 h3 {
@@ -103,10 +232,10 @@ h4 {
   break-after: avoid;
 }
 
-/* 柱: 偶数ページに章タイトルを出す例 */
+/* 柱: 偶数ページに「第N章 主題」を出す */
 @page :left {
   @top-left {
-    content: string(chapter-title);
+    content: string(chapter-num) "  " string(chapter-title);
     font-size: 8pt;
     color: #888;
   }
@@ -239,16 +368,105 @@ figcaption {
 }
 
 /* ============================================================
- * 目次
+ * 目次 — 章タイトルと節でメリハリをつける
+ *   ・章(data-section-level="1")…… 大きく・太く。本全体の流れが見える。
+ *   ・節(data-section-level="2")…… 小さく字下げ。各章の中の流れが見える。
+ * 見出し内の span(.chap-num / .chap-title / .chap-subtitle / .sec-label /
+ * .sec-sub)は本文と共通で、rehype-book-design.mjs が付与している。
  * ============================================================ */
-nav[role="doc-toc"] ol,
+
+/* 目次ページの見出し(index.html の h1「書名」/ h2「目次」)*/
+nav#toc {
+  break-before: page;
+}
+body > h1 {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+nav#toc > h2 {
+  font-size: 20pt;
+  color: var(--accent);
+  border-left: none;
+  border-bottom: 3px solid var(--accent);
+  padding: 0 0 0.3em;
+  margin: 0 0 1.4em;
+}
+
 nav#toc ol {
   list-style: none;
   padding-left: 0;
+  margin: 0;
 }
-nav[role="doc-toc"] a::after,
-nav#toc a::after {
+
+/* --- 章の行 --- */
+nav#toc > ol > li {
+  margin-top: 1.5em;                 /* 章と章のあいだを空けてブロック化 */
+  padding-top: 0.5em;
+  border-top: 1px solid var(--border);
+}
+nav#toc > ol > li:first-child {
+  margin-top: 0.5em;
+}
+nav#toc > ol > li > a {
+  display: block;
+  color: var(--fg);
+  line-height: 1.4;
+}
+nav#toc .chap-num {
+  display: inline-block;
+  min-width: 3.4em;
+  font-size: 9pt;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+nav#toc .chap-title {
+  font-size: 12.5pt;
+  font-weight: bold;
+  color: var(--fg);
+}
+nav#toc .chap-subtitle {
+  font-size: 9pt;
+  font-weight: normal;
+  color: var(--muted);
+}
+nav#toc .chap-subtitle::before {
+  content: " ── ";
+  color: var(--border);
+}
+/* 章の行だけ、タイトル末尾にリーダーとページ番号 */
+nav#toc > ol > li > a::after {
   content: leader('.') target-counter(attr(href), page);
+  font-size: 9.5pt;
+  color: var(--muted);
+}
+
+/* --- 節の行(章の中の流れ)--- */
+nav#toc > ol > li > ol {
+  margin: 0.5em 0 0.2em;
+  padding-left: 3.4em;               /* 章番号ぶん字下げして章にぶら下げる */
+  border-left: 2px solid var(--code-bg);
+}
+nav#toc > ol > li > ol > li {
+  margin: 0.15em 0;
+}
+nav#toc > ol > li > ol > li > a {
+  display: block;
+  font-size: 8.5pt;
+  color: var(--muted);
+  line-height: 1.5;
+}
+nav#toc .sec-label {
+  font-weight: bold;
+  color: #444;
+}
+nav#toc .sec-sub {
+  color: var(--muted);
+}
+/* 節の行のページ番号は控えめに */
+nav#toc > ol > li > ol > li > a::after {
+  content: leader('·') target-counter(attr(href), page);
+  color: #aaa;
 }
 
 /* リンクは紙面では黒(URL はコード表記で本文に出す方針) */
