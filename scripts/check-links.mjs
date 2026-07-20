@@ -10,14 +10,21 @@
  *
  * 1 件でも壊れたローカル参照があれば exit 1(CI で PR を落とすため)。
  */
-import { readFileSync } from 'node:fs';
-import { existsSync } from 'node:fs';
-import { glob } from 'node:fs/promises';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
-const files = [];
-for await (const f of glob('manuscripts/**/*.md')) files.push(f);
-files.sort();
+// manuscripts/ 配下の .md を再帰的に集める(Node 18/20/22 いずれでも動くよう自前で走査)
+function collectMarkdown(dir) {
+  const out = [];
+  for (const ent of readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, ent.name);
+    if (ent.isDirectory()) out.push(...collectMarkdown(full));
+    else if (ent.isFile() && ent.name.endsWith('.md')) out.push(full);
+  }
+  return out;
+}
+
+const files = collectMarkdown('manuscripts').sort();
 
 const LINK = /(?:!?\[[^\]]*\]\(([^)]+)\))|(?:<img[^>]+src=["']([^"']+)["'])/g;
 const broken = [];

@@ -9,15 +9,24 @@
  * 既定では「レポートのみ(exit 0)」。--strict を付けると 1 件でも残っていれば
  * 失敗(exit 1)するので、リリース用ワークフローで使う。
  */
-import { readFileSync } from 'node:fs';
-import { glob } from 'node:fs/promises';
+import { readFileSync, readdirSync } from 'node:fs';
+import path from 'node:path';
 
 const strict = process.argv.includes('--strict');
 const MARKER = /<!--\s*要検証/;
 
-const files = [];
-for await (const f of glob('manuscripts/**/*.md')) files.push(f);
-files.sort();
+// manuscripts/ 配下の .md を再帰的に集める(Node 18/20/22 いずれでも動くよう自前で走査)
+function collectMarkdown(dir) {
+  const out = [];
+  for (const ent of readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, ent.name);
+    if (ent.isDirectory()) out.push(...collectMarkdown(full));
+    else if (ent.isFile() && ent.name.endsWith('.md')) out.push(full);
+  }
+  return out;
+}
+
+const files = collectMarkdown('manuscripts').sort();
 
 let total = 0;
 const perFile = [];
