@@ -135,7 +135,51 @@
 
 ## 第4章 終了時点
 
-<!-- 追記予定 -->
+第 4 章では、統制の層(第 1〜3 章)の上に「ネットワークの層」を足しました。将来の Hub-Spoke 化・オンプレミス接続を見越した CIDR 設計を先に固め、dev/prod へ VNet を 1 つずつ構築しています。各 VNet は app 用・data 用の 2 サブネットと Bastion 専用サブネットを持ち、NSG はサブネット単位で管理します。既定を拒否寄りにし、data サブネットは app サブネットからのみ受信を許可する設計です。dev では一時 VM と Azure Bastion で疎通を確認しました(確認後に削除)。prod は骨格の構築までとし、Bastion を使う疎通確認は行っていません(第 3 章のパブリック IP 禁止ポリシーのため)。
+
+### 決めた方針(以降の章の前提)
+
+| 項目 | 決定内容 |
+|---|---|
+| CIDR 設計 | `10.0.0.0/8` を用途別に分割。ハブ=`10.0.0.0/16`(将来)、dev=`10.10.0.0/16`、prod=`10.20.0.0/16`、予備=`10.30.0.0/16` 以降 |
+| サブネット構成 | 各 VNet に app 用・data 用の 2 サブネット + `AzureBastionSubnet` |
+| NSG の管理単位 | サブネットに寄せる(NIC 側 NSG は原則使わない) |
+| NSG の既定方針 | 拒否寄り。data サブネットは app サブネットからのみ受信許可 |
+| 本番の運用アクセス | Bastion(パブリック IP 必要)は prod のポリシーと衝突。踏み台・Private 接続は続巻で設計 |
+
+### 作成したリソース
+
+| リソース種別 | 名前 | スコープ | 備考 |
+|---|---|---|---|
+| 仮想ネットワーク | `vnet-foundation-dev` | `rg-foundation-dev` | `10.10.0.0/16`。東日本。タグ `env=dev` |
+| サブネット | `snet-app-dev` / `snet-data-dev` / `AzureBastionSubnet` | `vnet-foundation-dev` | `10.10.1.0/24` / `10.10.2.0/24` / `10.10.255.0/26` |
+| NSG | `nsg-app-dev` / `nsg-data-dev` | `rg-foundation-dev` | 各サブネットへ関連付け。data は app からのみ許可 |
+| 仮想ネットワーク | `vnet-foundation-prod` | `rg-foundation-prod` | `10.20.0.0/16`。東日本。タグ `env=prod` |
+| サブネット | `snet-app-prod` / `snet-data-prod` / `AzureBastionSubnet` | `vnet-foundation-prod` | `10.20.1.0/24` / `10.20.2.0/24` / `10.20.255.0/26` |
+| NSG | `nsg-app-prod` / `nsg-data-prod` | `rg-foundation-prod` | 各サブネットへ関連付け |
+
+> 疎通確認で使った一時 VM(`vm-nettest-dev`)・Azure Bastion(`bastion-foundation-dev`)・パブリック IP(`pip-bastion-dev`)は、確認後に削除済み(常設リソースではない)。
+
+### RBAC・ポリシー変更
+
+| 対象 | 変更内容 | スコープ |
+|---|---|---|
+| — | この章では未実施(第 3 章のパブリック IP 禁止ポリシーが prod の Bastion 構築を制約する点のみ確認) | — |
+
+### ネットワーク変更
+
+| 対象 | 変更内容 |
+|---|---|
+| dev | `vnet-foundation-dev`(`10.10.0.0/16`)+ app/data/Bastion サブネット + NSG を構築 |
+| prod | `vnet-foundation-prod`(`10.20.0.0/16`)+ app/data/Bastion サブネット + NSG を構築 |
+| NSG 方針 | サブネット単位で管理。既定拒否寄り、data は app サブネット(`snet-app`)からのみ受信許可 |
+
+### コスト影響
+
+| 項目 | 概算 | 備考 |
+|---|---|---|
+| VNet / サブネット / NSG | 無料 | ネットワークの器自体に課金はない |
+| Azure Bastion / 仮想マシン / パブリック IP | 有料 | 疎通確認でのみ使用し削除済み。置きっぱなしは課金継続。<!-- 要検証: 公式Doc確認 — 各サービスの課金体系 --> |
 
 ## 第5章 終了時点
 
