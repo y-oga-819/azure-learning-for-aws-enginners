@@ -7,7 +7,7 @@ import rehypeBookDesign from './scripts/rehype-book-design.mjs';
 
 export default {
   title: 'AWS経験者のためのAzure実践入門【共通基礎編】',
-  author: 'y-oga-819',
+  author: 'yukineko_819',
   language: 'ja',
   size: 'A5',
   theme: './themes/techbook/theme.css',

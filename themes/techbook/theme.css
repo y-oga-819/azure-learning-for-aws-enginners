@@ -42,8 +42,11 @@
 html {
   font-family: "Hiragino Kaku Gothic ProN", "Noto Sans CJK JP", "Yu Gothic",
     "Meiryo", sans-serif;
-  font-size: 9.5pt;
-  line-height: 1.75;
+  /* 本文の級数と行送り。A5 の版面(116mm)で 1行 36.5字 × 31行。
+     行送りは字の大きさに追随させること(9pt で 1.75 まで空けると
+     1行が伸びるぶん行のつながりが切れ、段落のまとまりが見えなくなる)。 */
+  font-size: 9pt;
+  line-height: 1.7;
   color: var(--fg);
 }
 
