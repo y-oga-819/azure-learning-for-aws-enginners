@@ -39,6 +39,10 @@ rules:
     patterns:
       - ハンズ・オン
 
+  - expected: ロールベースのアクセス制御
+    patterns:
+      - ロールベースアクセス制御
+
   - expected: ランディングゾーン
     patterns:
       - ランディング・ゾーン
