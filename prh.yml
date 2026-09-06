@@ -46,3 +46,35 @@ rules:
   - expected: ランディングゾーン
     patterns:
       - ランディング・ゾーン
+
+  # --- 公開サービス編で追加(サービス名) ---
+  - expected: Cosmos DB
+    patterns:
+      - CosmosDB
+
+  - expected: Front Door
+    patterns:
+      - フロントドア
+      - FrontDoor
+
+  - expected: Application Insights
+    patterns:
+      - アプリケーションインサイト
+      - ApplicationInsights
+
+  - expected: API Management
+    patterns:
+      - APIManagement
+
+  # --- 公開サービス編 題材(TicketWave)固有語 ---
+  - expected: オーバーセル
+    patterns:
+      - オーバーセール
+      - 売り越し
+      - 過剰販売
+    prh: 在庫超過の販売事故は「オーバーセル」に統一
+
+  - expected: 主催者
+    patterns:
+      - オーガナイザー
+    prh: 題材のアクター名は「主催者」に統一
